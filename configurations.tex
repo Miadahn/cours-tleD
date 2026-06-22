@@ -1,0 +1,13 @@
+\begin{tikzpicture}[vect/.style={->,
+		shorten >=3pt,>=latex'},scale=0.5]
+	\tkzInit[xmin=-2,ymin=-2,xmax=6,ymax=6]
+%	\tkzGrid%\tkzAxeXY
+	\tkzDrawX \tkzDrawY
+		\tkzDefPoint(1,3){A}
+		\tkzDefPoint(5,-1){B}
+		\tkzDefPoint(-1,5){C}
+	\tkzDrawSegments(A,B C,A)
+	\tkzDrawPoints(A,B,C)
+	\tkzLabelPoints[left](C)\tkzLabelPoints[right](B,A)
+	\tkzRep
+	\end{tikzpicture}

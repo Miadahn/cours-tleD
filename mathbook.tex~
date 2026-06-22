@@ -1,0 +1,96 @@
+\documentclass[ams,openany,10pt,presentation,utf8]{mathbook}
+\usepackage{charter}
+\usepackage{bookman}
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage[blur]{bclogo}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{cancel}
+\definecolor{bleu}{cmyk}{0.59,0.11,0,0.59}
+\definecolor{vert}{cmyk}{0.78,0,0.74,0.45}
+\lstset{
+	numbers=left, 
+	numberstyle=\tiny, 
+	stepnumber=1, 
+	numbersep=3pt, 
+	language=[LaTeX]TeX, 
+	backgroundcolor=\color{bleu!20},
+	frame=shadowbox,
+	rulesepcolor=\color{bleu},
+	rulecolor=\color{bleu},
+	framexleftmargin=10pt,
+	keywordstyle=\color{vert}\bfseries,
+	basicstyle=\ttfamily,
+    columns=flexible,
+    keepspaces=true,
+    upquote=true,
+    commentstyle=\color{gray},
+    morekeywords={redefineColor,dfrac,setlength,cellspacetoplimit, cellspacebottomlimit,firstline,text,intro,introauthor,chapter, itemclass,exostart,corrstart,AfficheCorriges,columnbreak,titlepic, nbcolindex,indexname,printindex,makeindex,activites, DefineNewBoxLikeRem,BreakCorr}
+}
+%\usepackage{lipsum}
+%\input{add}
+\mathversion{bold}
+\everymath{\displaystyle}
+\title{Support de cours de la classe de s\'econde S}
+\author{I.L. TASSIGUI}
+\titlepic[0.5]{fractal.jpg}
+\date{\today}
+\makeindex
+\cfoot{{\footnotesize{\textbf\textsf{{Maths 2 \up{nde}S\;|\;\copyright\, L. TASSIGUI 95-73-92-93}}}}}
+\begin{document}
+
+\frontmatter
+
+%\maketitle
+{
+\makeatletter
+\sectiontitle@font
+\tableofcontents
+\makeatother
+}
+
+\mainmatter
+
+%\intro{Rien ne se perd, tout se transforme}
+%\introauthor{Lavoisier}
+ \newcommand{\activity}[3]{%
+     \begin{bclogo}[logo =\bcbook, noborder = true , sousTitre={\bf #1},marge =0,barre=snake,tailleOndu=2.5,epBarre=2]{\fbox{Activit\'e #2} : } %
+         #3 \end{bclogo}
+    }
+     \newcommand{\consigne}[3]{%
+         \begin{bclogo}[logo =\bccrayon, noborder = true , sousTitre={\small\bf #1},marge =0,epBarre=2,couleurBarre=blue]{Consigne #2 : } %
+             #3 \end{bclogo}
+        }
+         \newcommand{\info}[1]{
+             \begin{bclogo}[logo =\bcinfo, noborder = true , sousTitre=\textbf{\textsf{\uuline{Informations}}} : ,marge =0,barre=snake,motifBarre=$\star$,epBarre=2]\textit{#1} %
+                \end{bclogo}
+            }
+            
+                          \newcommand{\remark}[1]{%
+                              \begin{bclogo}[logo =\bclampe, noborder = true,marge =0,epBarre=2]{Remarque : } %
+                                  \textit{#1} \end{bclogo}
+                            }
+                            \newcommand{\resultat}[1]{%
+                                \begin{bclogo}[logo =\bcfleur, noborder = true,marge =0,epBarre=2,couleurBarre=red]{\uuline{R\'esultats attendus} : } %
+                                    #1 \end{bclogo}
+                            }              
+                            \newcommand{\exercic}[1]{%
+                                \begin{bclogo}[logo =\bcpanchant, noborder = true,marge =0,epBarre=2,couleurBarre=red]{\uuline{Exercices de maison} : } %
+                                    #1 \end{bclogo}
+                            } 
+                            
+                             \DefineNewBoxLikeRem{regles}{R\`egles de repr\'esentation en perspective cavali\`ere}{green}{white}{phv}
+                             
+                              \DefineNewBoxLikeDef{retenons}{Retenons}{green}{white}{phv}
+                           
+                            
+                            \newcommand\V[1]{\overrightarrow{#1}}
+                            \newcommand{\F}[2]{\dfrac{#1}{#2}}
+                            \newcommand{\f}[2]{\frac{#1}{#2}}
+                            \newcommand{\be}{\begin{enumerate}}
+                                \newcommand{\ee}{\end{enumerate}}
+                            \newcommand{\RC}[1]{\sqrt{#1}}
+\input{4-1}
+\input{sa2}
+\end{document}

@@ -1,0 +1,194 @@
+\usepackage[most]{tcolorbox}
+%\usepackage{pgf,tikz}
+\usepackage{tkz-base,tkz-fct,tkz-euclide,tkz-tab}
+\usetikzlibrary{babel}
+\usepackage{pas-math}
+\usepackage{tablists}
+
+ % lining
+%\newfontfamily{\LinuxLibertine}[Ligatures=TeX]{Linux Libertine O} % ,Numbers=OldStyle
+%\newfontfamily{\LinuxBiolinumO}[Ligatures=TeX]{Linux Biolinum O}% ,Numbers=OldStyle
+%\newfontfamily{\Ubuntu}[Ligatures=TeX]{Ubuntu} % ,Numbers=OldStyle
+%\setsansfont[Color=black]{Arial}
+%\setmonofont[Color=black]{Courier New}
+%\usepackage{tabularray}
+\usepackage{pifont,tasks}
+\DeclareMathOperator{\bary}{bar}
+ \newcommand{\activity}[3]{%
+ 	\vspace*{-0.3cm}
+     \begin{bclogo}[logo =\bcbook, noborder = true , sousTitre={\bf #1},marge =0,barre=snake,tailleOndu=2.5,epBarre=2]{\fbox{Activit\'e #2} : } %
+         #3 \end{bclogo}
+     \vspace*{-0.5cm}
+    }
+     \newcommand{\consigne}[3]{%
+     	%\vspace*{-0.2cm}
+         \begin{bclogo}[logo =\bccrayon, noborder = true , sousTitre={\small\bf #1},marge =0,epBarre=2,couleurBarre=blue]{Consigne #2 : } %
+             #3 \end{bclogo}
+         \vspace*{-0.3cm}
+        }
+         \newcommand{\info}[1]{
+         %	\vspace*{-0.5cm}
+             \begin{bclogo}[logo =\bcinfo, noborder = true , sousTitre=\textbf{\textsf{\uuline{Information}}} : ,marge =0,motifBarre=$\star$,epBarre=2]\textit{#1} %
+                \end{bclogo}
+            %\vspace*{-0.5cm}
+            }
+            
+                         % \newcommand{\remark}[1]{%
+                         %     \begin{bclogo}[logo =\bclampe, noborder = true,marge =0,epBarre=2]{Remarque : } %
+                          %        \textit{#1} \end{bclogo}
+                          %  }
+                            \newcommand{\resultat}[1]{%
+                            	\vspace*{-0.3cm}
+                                \begin{bclogo}[logo =\bcfleur, noborder = true,marge =0,epBarre=2,couleurBarre=red]{\uuline{R\'esultats attendus} : } %
+                                    #1 \end{bclogo}
+                           \vspace*{-0.5cm} }             
+                            \newcommand{\exercic}[1]{%
+                                \begin{bclogo}[logo =\bcpanchant, noborder = true,marge =0,epBarre=2,couleurBarre=red]{\uuline{Exercices de maison} : } %
+                                    #1 \end{bclogo}
+                            } 
+                            
+                             \DefineNewBoxLikeRem{regles}{R\`egles de repr\'esentation en perspective cavali\`ere}{green}{white}{phv}
+                             
+                              \DefineNewBoxLikeDef{retenons}{Retenons}{green}{white}{phv}
+                           
+                            
+                            \newcommand\V[1]{\overrightarrow{#1}}
+                            \newcommand{\F}[2]{\dfrac{#1}{#2}}
+                            \newcommand{\f}[2]{\frac{#1}{#2}}
+                            \newcommand{\be}{\begin{enumerate}}
+                                \newcommand{\ee}{\end{enumerate}}
+%%%%%%%%%%%%%%%%%%%%Propriété avec titre%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%Remarque%%%%%%%%%%%%%%%%%%%%
+\newtcolorbox{remark}[1][]{enhanced,
+	before skip=2mm,after skip=3mm,left skip=6.5mm,
+	boxrule=0.4pt,left=4mm,right=2mm,top=1mm,bottom=1mm,
+	colback=yellow!50,colframe=yellow!20!black,
+	sharp corners,underlay={%
+		%	\path[fill=yellow!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		%	\path[draw=blue,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		\path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\huge\bfseries !} ([xshift=4mm]interior.north west);
+	},width=\linewidth,drop fuzzy shadow,#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%Propriétés au pluriel%%%%%%%%%%%%%%%%%%
+\newtcolorbox{proprietys}[1][]{enhanced,
+	before skip=2mm,after skip=3mm,
+	boxrule=0.4pt,left=10mm,right=2mm,top=1mm,bottom=1mm,
+	colback=yellow!50,colframe=yellow!20!black,
+	sharp corners,underlay={%
+		%	\path[fill=yellow!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		%	\path[draw=blue,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+		\path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white,rotate=90]{\huge\bfseries Propriétés} ([xshift=10mm]interior.north west);
+	},drop fuzzy shadow,#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%SITUATION DE DÉPART %%%%%%%%%%%%%%%%%%%%%%%
+          		\newtcbox{\mylib}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.4pt,top=0mm,bottom=0mm,
+	right=0mm,left=4mm,arc=1pt,boxsep=3pt,before upper={\vphantom{dlg}},
+	colframe=green!50!black,coltext=green!25!black,colback=white,
+	overlay={\begin{tcbclipinterior}\fill[green!75!blue!50!white] (frame.south west)
+			rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {S.A 1} ([xshift=4mm]frame.north west);\end{tcbclipinterior}}}
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù%%%%%%%%%%%%%%%%%%%%%%ù%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù%%%%%%%%%%%%%%%%ù  Commandes mathématiques%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\DeclareRobustCommand{\ve}[1]{%
+	\overrightarrow{\rule{0em}{1.8ex} #1 \rule{0.15em}{0ex}}}
+% %%% Commande pour dï¿œaler les parenthï¿œes vers le bas autour
+% %%% des vecteurs par exemple :
+\newcommand{\DecalV}[2][2pt]{%
+	\raisebox{#1}{%
+		$\left(\raisebox{-#1}{\ensuremath{#2}}\right)$}}
+%%%%angle de vecteur avec chapeau
+\newcommand{\anglevec}[2]{%
+	\DecalV{%
+		\widehat{%
+			\ve{#1};\ve{#2}
+}}}
+
+%\newcommand{\I}{{\rm i}}
+
+%\newtcolorbox{encadre}{fonttitle=\scriptsize,colback=LightBlue!10!white,colframe=blue,width=4.7cm,valign=center,halign=left}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition de la date : les mois sont écrits en français
+% Date Mois Année
+\newcommand{\Date}{
+	%\ifnum\number\day<10 0\fi \number\day \space%
+	\ifcase \month \or Janvier \or Février \or Mars \or Avril  \or Mai%
+	\or Juin\or Juillet\or Août \or Septembre \or Octobre \or Novembre \or Décembre \fi%
+	\space \number \year}
+
+% Commande \longarc pour afficher les arc orientés
+\newcommand{\ArcOriente}[1]{\ensuremath{%
+		\begin{tikzpicture}[baseline,anchor=base,inner sep=0pt,outer sep=0pt,line width=0.5pt]%
+		\node at (0,0) {$#1$};%
+		\draw[<-,>=stealth',yshift=-1pt,xshift=-0.04cm] (45:0.5cm) arc (45:135:0.4cm);%
+		\end{tikzpicture}%
+	}%
+}
+
+% Commande \longarc pour afficher les arc orientés
+\newcommand{\Arc}[1]{\ensuremath{%
+		\begin{tikzpicture}[baseline,anchor=base,inner sep=0pt,outer sep=0pt,line width=0.5pt]%
+		\node at (0,0) {$#1$};%
+		\draw[yshift=-1pt,xshift=-0.04cm] (45:0.5cm) arc (45:135:0.4cm);%
+		\end{tikzpicture}%
+	}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Symbole parallel incliné                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\parallels}{\Scale[1.05]{\sslash}}
+\newcommand{\parallelsl}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+\newcommand{\segment}[1]{\ensuremath{\big[#1\big]}}
+\newcommand{\Segment}[1]{\ensuremath{\left[#1\right]}}
+\newcommand{\droite}[1]{\ensuremath{\big(#1\big)}}
+\newcommand{\Droite}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\plan}[1]{\ensuremath{\big(#1\big)}}
+\newcommand{\Plan}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\ortho}{\Scale[1.2]{\bot}}
+\newcommand{\scalaire}[2]{\ensuremath{\vv{#1}{\hbox{\fontsize{18}{18}\selectfont$\mathbf{.}$}\vv{#2}}}}
+\newcommand{\module}[1]{\ensuremath{\big|#1\big|}}
+% commande \reallywidehat : mesure angle orienté
+% necessite: listofitems.sty , listofitems.tex , scalerel.sty et stackengine.sty
+%\stackMath
+%\newcommand\reallywidehat[1]{%
+%	\savestack{\tmpbox}{\stretchto{%
+%			\scaleto{%
+%				\scalerel*[\widthof{\ensuremath{#1}}]{\kern4pt\bigwedge\kern4pt}%
+				%{\rule[-\textheight/2]{1ex}{\textheight}}%WIDTH-LIMITED BIG WEDGE
+%			}{\textheight}%
+%		}{0.5ex}}%
+%	\stackon[2pt]{#1}{\tmpbox}%
+%}
+
+% commande \mao{#1}{#2} : mesure angle orienté
+\newcommand{\mao}[2]{\ensuremath{
+		{\fontsize{3}{3}\selectfont\ }\reallywidehat{\left(\vv{#1},\vv{#2}\right)}}
+} 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+		
+\definecolor{berry}{RGB}{235, 37, 129}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newmdenv[skipabove=7pt,
+skipbelow=7pt,
+rightline=false,
+leftline=false,
+topline=false,
+bottomline=false,
+linecolor=berry,
+backgroundcolor=berry!10,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=2pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=2.5pt,
+innerbottommargin=5pt
+]{boite}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
