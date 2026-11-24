@@ -9,6 +9,9 @@
 %   \input{outils_versions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{environ}
+\usepackage{needspace}
+% Pas d'étirement vertical entre les consignes pour remplir la page
+\raggedbottom
 
 % Espace après une consigne dans la version élève : pas de lignes de réponse
 % (l'argument, nombre de lignes, est conservé mais ignoré).
@@ -67,7 +70,7 @@
 \gdef\acoller@file{}
 \newcommand{\acollerbloc}[2]{%
 	\par\medskip
-	\begin{tcolorbox}[enhanced,breakable,sharp corners,
+	\begin{tcolorbox}[enhanced,sharp corners,
 		colback=white,colframe=black!70,
 		borderline={0.8pt}{0pt}{black!70,dashed},boxrule=0pt,
 		title={\ding{34}\enspace À coller dans le cahier de cours\enspace\ding{34}\hfill #1},
@@ -83,5 +86,8 @@
 			\noexpand\acollerbloc{\unexpanded{#1}}{\unexpanded\expandafter{\BODY}}}}%
 	\acoller@tmp
 	\fi}
+% Éviter qu'une consigne soit coupée en bas de page
+\let\consigne@orig\consigne
+\renewcommand{\consigne}[3]{\Needspace{12\baselineskip}\consigne@orig{#1}{#2}{#3}}
 \newcommand{\collerici}{\ifenseignant\else\acoller@file\gdef\acoller@file{}\fi}
 \makeatother
