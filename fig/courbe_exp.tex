@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+	thick,
+	>=latex',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	},scale=1
+	]
+	\draw [gray,dashed] (-5,-1) grid[step=1] (2,5);
+	\clip (-5,-1) rectangle (2,5);
+	\coordinate (O) at (0,0);
+	\draw[->,very thin,line width=1.3pt] (-5,0) -- (3,0) coordinate (xmax);
+	\draw[->,very thin,line width=1.3pt] (0,-1) -- (0,5) coordinate (ymax);
+	\draw[line width=1pt,violet,latex-latex] (0,1)|-(1,0)node[right,pos=0.25 ]{$\vec j$}node[below left,pos=0.5 ]{$O$}node[below left,pos=0.85 ]{$\vec i$};
+	\draw[domain=-1:1,samples=200,red,<->] plot(\x,{\x+1});
+	\draw[domain=-5:2,samples=200,blue] plot(\x,{exp(\x)});
+	\draw[line width=1pt,red,<-,dashed] (2.718,0)node[label={below:$\e$}]{} -- (2.718,1)node{$\bullet$};
+	%\draw[line width=1pt,red,->,dashed] (2.718,1)node{}-- (0,1)node[label={left:$1$}]{};
+	\draw[red](1,-0.3)node{$1$};
+	%\draw[red](2,-0.3)node{$2$};
+	\draw[red](3,-0.3)node{$3$};
+	\draw[red](-0.3,2)node{$2$};
+	\draw[red](-0.3,3)node{$3$};
+	\draw[red](-0.3,4)node{$4$};
+	\draw[blue] (1.8,4)node[right,rotate=90]{$(\mathcal{C}_{\exp})$};
+\end{tikzpicture}

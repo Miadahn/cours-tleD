@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=0.8,vect/.style={->,shorten >=1pt,>=latex'}]
+\tkzInit[xmin=0,ymin=0,xmax=8,ymax=7]
+%\tkzAxeXY\tkzGrid
+\tkzDefPoints{0.5/1/Z,6/1/B,2/3/D,7.5/3/C,2.5/1/M,2.5/3/N,2.5/4/O,5/3/P,5/5.5/Q}
+\tkzDefPoints{4/4.5/A1,6/4.5/A2,6/2/A3,6/4/A4}
+%\tkzDrawPoints(A,H,M)
+%\tkzDrawPolygon(Z,B,C,D)
+\tkzDrawSegments[color=blue](M,P M,O O,Q Q,P Z,D D,N P,C C,B B,Z)
+\tkzDrawSegments[color=blue][dashed](P,N)
+\tkzMarkAngles[mark=none,size=1cm](B,Z,D P,M,N)
+\tkzDrawSegments[vect](A1,A2 A3,A4)
+\tkzLabelSegment[pos=0.8,above](A1,A2){$\overrightarrow{n'}$}
+\tkzLabelSegment[pos=0.8,right](A3,A4){$\overrightarrow{n}$}
+%\tkzMarkRightAngle(A,H,M)
+%\tkzFillAngle[size=0.8cm,fill=gray](B,Z,D)
+\tkzLabelAngle[pos=0.65](B,Z,D){$\mathcal{P}$}
+\tkzLabelAngle[pos=0.65](P,M,N){$\mathcal{Q}$}
+%\tkzLabelPoints[right](M,H) \tkzLabelPoints[left](A)
+%\tkzText(6,5.5){$(\mathcal{D})$}
+\end{tikzpicture}

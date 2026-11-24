@@ -1,0 +1,9 @@
+\begin{tikzpicture}[scale=0.8,vect/.style={->,shorten >=1pt,>=latex'}]
+\tkzInit[xmin=0,ymin=0,xmax=8,ymax=7]
+%\tkzAxeXY\tkzGrid
+\tkzDefPoints{0.5/1/Z,6/1/P,2/3/D,7.5/3/Q,1.5/2/A,5/1.5/B,6/2.5/C,1.5/5/E,1.5/2.7/p}
+\tkzDrawSegments[color=blue](D,Q Z,D Q,P P,Z)
+\tkzDrawSegments[vect,dashed](A,B A,C p,E)
+\tkzLabelSegment[right](p,E){$\overrightarrow{AB}\wedge\overrightarrow{AC}$}
+\tkzLabelPoints(B)\tkzLabelPoints[right](C)\tkzLabelPoints[below](A)
+\end{tikzpicture}

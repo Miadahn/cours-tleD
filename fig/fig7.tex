@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=0.8,vect/.style={->,shorten >=1pt,>=latex'}]
+\tkzInit[xmin=0,ymin=0,xmax=8,ymax=7]
+%\tkzAxeXY\tkzGrid
+\tkzDefPoints{0.5/1/Z,6/1/P,2/3/D,7.5/3/Q}
+\tkzDefPoints{1/1.5/o1,6/1.5/o2,2/2.5/o3,7/2.5/o4}
+\tkzDefPoints{3/1.7/p1,5/1.7/p2,4/2.7/p3,6/2.7/p4}
+\tkzDefPoints{2/1.5/A,3/2.5/B}
+\tkzDefPoints{1.5/2/e,1.5/4.5/f}
+\tkzDrawPoints(A,B)
+\tkzDrawSegments(o1,o2 o3,o4)
+\tkzDrawSegments[vect](p1,p2 p3,p4)
+\tkzDrawSegments[vect,dashed](A,B e,f)
+\tkzDrawSegments[color=blue](D,Q Z,D Q,P P,Z)
+ \tkzLabelSegment[above=-0.1](p1,p2){$\overrightarrow{u}$}
+  \tkzLabelSegment[right=16pt](p3,p4){$\overrightarrow{v}$}
+\tkzLabelPoints[below](A)\tkzLabelPoints[above](B)
+\tkzLabelSegments[below=-0.1,pos=0.85](o1,o2){$(\mathcal{D})$}
+\tkzLabelSegments[below,pos=0.83](o3,o4){$(\mathcal{D}')$}
+\tkzLabelSegment[left](e,f){$\overrightarrow{AB}\wedge\overrightarrow{u}$}
+\end{tikzpicture}
