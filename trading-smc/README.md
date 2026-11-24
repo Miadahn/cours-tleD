@@ -24,7 +24,7 @@ python3 -m http.server 8000   # puis ouvrir http://localhost:8000
 | **Deriv** | Indices synthétiques (Volatility `R_75`, `1HZ100V`, `BOOM1000`, `CRASH1000`, `stpRNG`…), Forex (`frxEURUSD`), or (`frxXAUUSD`), indices (`OTC_NDX`), crypto. **Flux temps réel** par WebSocket (case « Temps réel »). Liste complète des actifs chargée automatiquement. |
 | **Binance** | Crypto en direct, sans clé API (`BTCUSDT`, `ETHUSDT`, `PAXGUSDT` pour l'or…). Rafraîchissement auto toutes les 30 s. |
 | **Fichier CSV** | Pour le Forex, les indices, les actions… Export TradingView (`time,open,high,low,close,volume`) ou MetaTrader (`date,heure,open,high,low,close,volume`). L'unité de temps est détectée ; on peut choisir une unité supérieure (rééchantillonnage). |
-| **Démo** | Données simulées, utilisées automatiquement si Binance est injoignable. |
+| **Démo** | Données simulées, utilisées automatiquement si Deriv ou Binance est injoignable. |
 
 ### Deriv : App ID
 
