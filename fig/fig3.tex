@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=0.8,vect/.style={->,shorten >=1pt,>=latex'}]
+\tkzInit[xmin=0,ymin=0,xmax=8,ymax=7]
+%\tkzAxeXY\tkzGrid
+\tkzDefPoints{0.5/1/Z,6/1/E,2/3/D,7.5/3/C,3/2/a,3/4/b}
+\tkzDefPoints{1/5/o1,8/5/o2,4/4.5/p1,7/4.5/p2,2/5/A}
+\tkzDrawPoint(A)
+%\tkzDrawPolygon(Z,B,C,D)
+\tkzDrawSegments(D,C Z,D C,E E,Z o1,o2)
+\tkzMarkAngle[mark=none,size=1cm](E,Z,D)
+\tkzDrawSegment[vect,color=blue](a,b)
+\tkzDrawSegment[vect](p1,p2)
+\tkzLabelSegment[below](p1,p2){$\overrightarrow{u}$}
+%\tkzFillAngle[size=0.8cm,fill=gray](B,Z,D)
+\tkzLabelSegment[pos=0.7,left,color=blue](a,b){$\vec{n}$}
+\tkzLabelAngle[pos=0.65](E,Z,D){$\mathcal{P}$}
+\tkzLabelSegment[above,pos=0.8](o1,o2){$(\mathcal{D})$}
+\tkzLabelPoints[above](A)
+\end{tikzpicture}

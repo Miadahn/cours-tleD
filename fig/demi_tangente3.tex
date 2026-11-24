@@ -1,0 +1,19 @@
+\begin{tikzpicture}[
+	thick,
+	>=stealth',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	},scale=0.55
+	]
+	%	\draw [gray] (-1,-1) grid[step=1] (4,4);
+	\coordinate (O) at (0,0);
+	\draw[->] (-0.3,0) -- (4,0) coordinate[] (xmax);
+	\draw[->] (0,-0.3) -- (0,4) coordinate[] (ymax);
+	\draw (1,1) ..controls (2,1) and (3,2) ..(3,3);
+	\draw[red,->] (3,3) --(3,2);
+	\draw (3,3) node{$\bullet$};
+\end{tikzpicture}

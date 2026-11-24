@@ -1,0 +1,48 @@
+\tikzset{ midd/.style={
+		decoration={
+			markings,
+			mark=at position 0.5 with {%
+				\makebox[6pt][l]{\arrow{triangle 45}},
+			},
+		},
+		postaction={decorate},{Circle[]}-{Circle[]}
+	},}%
+\begin{tikzpicture}[yscale=2,xscale=1,rounded corners=4pt]
+	% xscale et yscale permettent d'ajuster largeur et hauteur
+	% positionner les nœuds
+	\node(a) at (-3,0)[rectangle,draw,,text width=2.5 cm,fill=blue!30,text centered] {$\lim\limits_{x \to \infty} f(x)=b$};
+	\node(b) at (6,0)[rectangle,draw,,text width=2.7 cm,fill=blue!30,text centered] {$\lim\limits_{x \to \infty} f(x)=\infty$};
+	\node(c) at (12.2,0)[rectangle,draw,,text width=2.5 cm,fill=blue!30,text centered] {$\lim\limits_{x \to x_0} f(x)=\infty$};
+	%
+	\node(d) [below left=2cm of b ,rectangle,draw,text width=4.5cm,text centered] {$\lim\limits_{x \to \infty} \big[f(x)-(ax+b)\big]=0$};
+	\node(e) [right=0.2cm of d ,rectangle,draw,text width=3.4cm,text centered] {$\lim\limits_{x \to \infty} \dfrac{f(x)}{x}=a$ ($a\neq 0$)};
+	\node(f) [right=0.2cm of e ,rectangle,draw,text width=2.5cm,text centered] {$\lim\limits_{x \to \infty} \dfrac{f(x)}{x}=\infty$};
+	\node(g) [right=0.2cm of f ,rectangle,draw,text width=2.5cm,text centered] {$\lim\limits_{x \to \infty} \dfrac{f(x)}{x}=0$};
+	%
+	\node(h) [below =1.7cm of d ,rectangle,draw,text width=3.8cm,text centered,xshift=1.9cm] {$\lim\limits_{x \to \infty} \big[f(x)-(ax)\big]=b$};
+	\node(i) [right=0.3cm of h,rectangle,draw,text width=4.1cm,text centered] {$\lim\limits_{x \to \infty} \big[f(x)-(ax)\big]=\infty$};
+	%
+	\node(j) [below left=3.5cm of h ,rectangle,draw,text width=2.5cm,text centered,xshift=0cm] {$(\mathcal{C}_f)$ admet une asymptote (horizontale) d'équation $y=b$ au voisinage de $\infty$};
+	\node(k) [right=0.3cm of j ,rectangle,draw,text width=2.5cm,text centered] {La droite d'équation $y=ax+b$ est une asymptote (oblique) de $(\mathcal{C}_f)$ au voisinage de $\infty$};
+	\node(l) [right=0.3cm of k ,rectangle,draw,text width=2.5cm,text centered] {$(\mathcal{C}_f)$ admet une branche parabolique de direction la droite d'équation $y=ax$ au voisinage de $\infty$};
+	\node(m) [right=0.3cm of l ,rectangle,draw,text width=2.5cm,text centered] {$(\mathcal{C}_f)$ admet une branche parabolique de direction l'axe des ordonnées au voisinage de $\infty$};
+	\node(n) [right=0.3cm of m ,rectangle,draw,text width=2.5cm,text centered] {$(\mathcal{C}_f)$ admet une branche parabolique de direction l'axe des abscisses au voisinage de $\infty$};
+	\node(o) [right=0.3cm of n ,rectangle,draw,text width=2cm,text centered] {$(\mathcal{C}_f)$ admet une asymptote (verticale) d'équation $x=x_0$};
+	%%%arrow%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%
+	\draw[midd]([xshift=-0.3cm]a.south)--(j.north);
+	%\draw[midd]([xshift=-0.5cm]d.west)|-(k.west);
+	\draw[midd]([xshift=0.65cm]d.south west)--([xshift=0.6cm]k.north west);
+	\draw[midd](b)-|([xshift=2.5cm]d);
+	\draw[midd](b.south)--([yshift=-0.1cm]b.south)-|([xshift=0.7cm]e.north west);
+	\draw[midd ](b.south)--([yshift=-0.1cm]b.south)-|(f.north);
+	\draw[midd](b.east)--([xshift=1cm]b.east)-|([xshift=-1cm]g.north);
+	%
+	\draw[midd](e.south)--([yshift=-0.15cm]e.south)-|(h.north);
+	\draw[midd](e.south)--([yshift=-0.15cm]e.south)-|(i.north);
+	\draw[midd]([xshift=-0.1cm]f.south)--([yshift=-0.2cm]f.south)--([xshift=-0.1cm,yshift=-0.2cm]f.south east)--([xshift=2.5cm,yshift=0.7cm]m.north east)-|(m.north);
+	\draw[midd](h.west)--([xshift=0.1cm]h.west)-|([xshift=0.3cm]k.north);
+	\draw[midd](i.south)--([yshift=-0.25cm]i.south)-|(l.north);
+	\draw[midd](g.south)--([xshift=2.5cm,yshift=0.3cm]n.north)-|([xshift=0cm]n.north);
+	\draw[midd]([xshift=1cm]c.south)--([xshift=1cm,yshift=-3.5cm]c.south)--([xshift=0.1cm,yshift=-3.5cm]c.south)--([xshift=0.5cm]o.north);
+\end{tikzpicture}

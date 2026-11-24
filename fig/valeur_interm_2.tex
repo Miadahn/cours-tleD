@@ -1,0 +1,23 @@
+\begin{tikzpicture}[
+	thick,
+	>=latex',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	},scale=1
+	]
+	%	\draw [gray] (-1,-2) grid[step=1] (6,3);
+	\clip (-1,-2) rectangle (7,3.5);
+	\coordinate (O) at (0,0);
+	\draw[->,very thin] (-1,0) -- (7,0) coordinate (xmax);
+	\draw[->,very thin] (0,-2) -- (0,3.5) coordinate (ymax);
+	\draw[red] (0.5,3) .. controls (1,2) and (3,-1) ..(6,-1.5);
+	\draw[line width=1pt,blue,dashed] (0,3)node[left]{$f(a)$} -- (0.5,3)node{$\bullet$} -- (0.5,0)node[below]{$a$};
+	\draw[line width=1pt,blue,dashed] (6,0)node[above]{$b$} -- (6,-1.5)node{$\bullet$} -- (0,-1.5)node[left]{$f(b)$};
+	\draw [blue] (2.9,0)node{$\bullet$};	
+	\draw[bleu] (2.9,0) node[below]{$x_0$};
+	\draw node[below left]{$O$};
+\end{tikzpicture}

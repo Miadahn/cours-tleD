@@ -1,0 +1,23 @@
+\begin{tikzpicture}[
+	thick,
+	>=stealth',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	},scale=0.55
+	]
+	%	\draw [gray,dashed] (-4,-8) grid[step=1] (6,5);
+\coordinate (O) at (0,0);
+\draw[->] (-4,0) -- (6,0) coordinate[] (xmax);
+\draw[->] (0,-7.5) -- (0,4.5) coordinate[] (ymax);
+\draw[domain=-3:5,samples=200,smooth,blue] plot(\x,{0.3333*\x*\x*\x-\x*\x-3*\x+1.667});
+\draw[blue] (-2,3) node{$(\mathcal{C})$};
+\draw[red,dashed] (1,0) node{$\bullet$} --(1,-2)node[label = {right:$I\coord{1}{-2}$}]{$\bullet$}--(0,-2)node{$\bullet$};
+\draw[dashed,red] (5,0)node[label = {below:$1+h$}]{$\bullet$}--(5,3)node[]{$\bullet$}--(0,3)node[label = {above right:$f(1+h)$}]{$\bullet$};
+\draw[dashed,red] (-3,0)node[label = {above:$1-h$}]{$\bullet$}--(-3,-7)node[]{$\bullet$}--(0,-7)node[label = {right:$f(1-h)$}]{$\bullet$};
+\draw[red,dashed] (-3,-7) --(5,3);
+%	\draw[domain=-0.5:5,samples=200,red] plot(\x,{\x});
+\end{tikzpicture}

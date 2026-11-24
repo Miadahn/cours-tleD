@@ -1,0 +1,20 @@
+\begin{tikzpicture}[
+	thick,
+	>=stealth',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	},scale=0.6
+	]
+	%	\draw [gray] (-1,-1) grid[step=1] (4,4);
+	\coordinate (O) at (0,0);
+	\draw[->] (-0.3,0) -- (4,0) coordinate[] (xmax);
+	\draw[->] (0,-0.3) -- (0,4) coordinate[] (ymax);
+	\draw (1,1) ..controls (1.5,3) and (2,5.5) ..(3,1);
+	%\draw (2,3) ..controls (3,3) and (3,2) ..(3,1);
+	\draw[red,<->] (1.4,3.55) --(2.6,3.55);
+	\draw[dashed] (2,0)node[below]{$x_0$} --(2,3.5);
+\end{tikzpicture}

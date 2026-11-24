@@ -1,0 +1,25 @@
+%%%Point anguleux
+\begin{tikzpicture}[
+	thick,
+	>=stealth',
+	dot/.style = {
+		draw,
+		fill = white,
+		circle,
+		inner sep = 0pt,
+		minimum size = 4pt
+	}
+	]
+	%	\draw [gray] (-1,-1) grid[step=1] (4,4);
+	\coordinate (O) at (0,0);
+	\draw[->] (-0.3,0) -- (4,0) coordinate[] (xmax);
+	\draw[->] (0,-0.3) -- (0,4) coordinate[] (ymax);
+	\draw (-0.5,0.5) ..controls (-0.5,1) and (1,1.75) ..(2,2);
+	\draw[red,->] (2,2) --(1,1.8);
+	\draw (2,2) ..controls (2.6,3) and (3,3) ..(4,3.5);
+	\draw[red,->] (2,2) --(2.6,3);
+	\draw (2,2) node{$\bullet$};\draw (1.8,2.3) node{$M_0$};
+	\draw[dashed] (2,0) node[below]{$x_0$} -- (2,2);
+	\draw (0.72,1.9) node{$\big(T_g\big)$};
+	\draw (2.5,3.2) node{$\big(T_d\big)$};
+\end{tikzpicture}
