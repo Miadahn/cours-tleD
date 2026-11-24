@@ -2,7 +2,7 @@
 % Outils pour produire deux versions d'une séquence à partir d'un
 % seul fichier de contenu :
 %   - version enseignant : corrigés, remarques pédagogiques, preuves ;
-%   - version élève : ces blocs sont remplacés par des lignes de réponse.
+%   - version élève : ces blocs sont supprimés (sans espace de réponse).
 %
 % Utilisation dans le fichier principal (après \input{my_structure}) :
 %   \newif\ifenseignant \enseignanttrue   % ou \enseignantfalse
@@ -10,15 +10,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{environ}
 
-% Lignes pointillées pour répondre : \lignesreponse{nombre de lignes}
-\newcommand{\lignesreponse}[1]{%
-	\par\medskip
-	\foreach \numligne in {1,...,#1}{\noindent\makebox[\linewidth]{\dotfill}\endgraf\vspace{3mm}}%
-	\medskip}
+% Espace après une consigne dans la version élève : pas de lignes de réponse
+% (l'argument, nombre de lignes, est conservé mais ignoré).
+\newcommand{\lignesreponse}[1]{\par\medskip}
 
 % Corrigé d'une consigne.
 %   \begin{corrigeprof}[n] ... \end{corrigeprof}
-%   enseignant : encadré « Corrigé » ; élève : n lignes de réponse (6 par défaut).
+%   enseignant : encadré « Corrigé » ; élève : rien (pas d'espace de réponse).
 \NewEnviron{corrigeprof}[1][6]{%
 	\ifenseignant
 	\begin{tcolorbox}[enhanced,breakable,sharp corners,
