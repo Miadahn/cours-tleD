@@ -21,9 +21,19 @@ python3 -m http.server 8000   # puis ouvrir http://localhost:8000
 
 | Source | Détails |
 |---|---|
+| **Deriv** | Indices synthétiques (Volatility `R_75`, `1HZ100V`, `BOOM1000`, `CRASH1000`, `stpRNG`…), Forex (`frxEURUSD`), or (`frxXAUUSD`), indices (`OTC_NDX`), crypto. **Flux temps réel** par WebSocket (case « Temps réel »). Liste complète des actifs chargée automatiquement. |
 | **Binance** | Crypto en direct, sans clé API (`BTCUSDT`, `ETHUSDT`, `PAXGUSDT` pour l'or…). Rafraîchissement auto toutes les 30 s. |
 | **Fichier CSV** | Pour le Forex, les indices, les actions… Export TradingView (`time,open,high,low,close,volume`) ou MetaTrader (`date,heure,open,high,low,close,volume`). L'unité de temps est détectée ; on peut choisir une unité supérieure (rééchantillonnage). |
 | **Démo** | Données simulées, utilisées automatiquement si Binance est injoignable. |
+
+### Deriv : App ID
+
+L'application utilise par défaut l'`app_id` **1089**, l'application de test publique de Deriv.
+Pour un usage régulier, crée gratuitement ta propre application sur [api.deriv.com](https://api.deriv.com)
+(menu *Dashboard → Register application*) et saisis son identifiant dans le champ **Deriv App ID**.
+Seules des données de marché publiques sont lues : aucun jeton de compte n'est demandé, aucun ordre n'est passé.
+
+Les indices synthétiques tournent 24h/24 : pour eux, les killzones sont désactivées automatiquement.
 
 ## Ce qui est détecté
 
@@ -49,7 +59,7 @@ trading-smc/
 ├── index.html          interface
 ├── css/style.css
 ├── js/smc.js           moteur d'analyse SMC/ICT (fonctions pures, sans dépendance)
-├── js/data.js          Binance, import CSV, données de démo
+├── js/data.js          Deriv (WebSocket), Binance, import CSV, données de démo
 ├── js/app.js           graphique, dessin des zones, panneau d'analyse
 ├── vendor/             TradingView Lightweight Charts 4.2.0 (Apache 2.0)
 └── tests/smc.test.js   tests du moteur

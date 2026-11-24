@@ -364,7 +364,7 @@
   // ---------------------------------------------------------------------------
   // Setup de trade (aide à la décision — pas un conseil financier)
   // ---------------------------------------------------------------------------
-  function buildSetup(c, a, ctx, htfBias) {
+  function buildSetup(c, a, ctx, htfBias, useKillzones) {
     const n = c.length;
     const dir = ctx.trend;
     if (!dir) return null;
@@ -423,7 +423,7 @@
         label: 'Zone de qualité (OB avec FVG / déplacement)',
         ok: zone.kind === 'fvg' || !!zone.hasFvg,
       },
-      { label: 'Killzone active', ok: !!killzoneOf(c[n - 1].time) },
+      { label: 'Killzone active', ok: useKillzones ? !!killzoneOf(c[n - 1].time) : null },
       { label: 'Ratio risque/rendement ≥ 2', ok: rr !== null && rr >= 2 },
     ];
     const graded = checklist.filter((x) => x.ok !== null);
@@ -434,7 +434,7 @@
   // ---------------------------------------------------------------------------
   // Point d'entrée
   // ---------------------------------------------------------------------------
-  const DEFAULTS = { swingLength: 5, fvgMinAtr: 0.1, eqTolAtr: 0.1, htfBias: null };
+  const DEFAULTS = { swingLength: 5, fvgMinAtr: 0.1, eqTolAtr: 0.1, htfBias: null, useKillzones: true };
 
   function analyze(candles, options) {
     const o = Object.assign({}, DEFAULTS, options || {});
@@ -458,7 +458,7 @@
     const pd = premiumDiscount(c, swings, st.trend);
 
     const ctx = { trend: st.trend, events: st.events, blocks, fvgs, liquidity, levels, pd };
-    const setup = buildSetup(c, a, ctx, o.htfBias);
+    const setup = buildSetup(c, a, ctx, o.htfBias, o.useKillzones);
 
     return {
       ok: true,
@@ -472,7 +472,8 @@
       levels,
       pd,
       setup,
-      killzone: killzoneOf(c[n - 1].time),
+      killzone: o.useKillzones ? killzoneOf(c[n - 1].time) : null,
+      useKillzones: o.useKillzones,
     };
   }
 

@@ -123,3 +123,51 @@ test('rééchantillonnage vers une unité supérieure', () => {
   assert.equal(h[0].close, c[15].close);
   assert.equal(h[1].high, Math.max(...c.slice(16).map((b) => b.high)));
 });
+
+test('Deriv : conversion des bougies et flux temps réel', () => {
+  const msg = {
+    msg_type: 'candles',
+    candles: [
+      { epoch: 1704153600, open: 100, high: 102, low: 99, close: 101 },
+      { epoch: 1704154500, open: 101, high: 103, low: 100, close: 102 },
+    ],
+  };
+  const c = Data.parseDerivCandles(msg, '15m');
+  assert.equal(c.length, 2);
+  assert.equal(c[1].close, 102);
+
+  // mise à jour de la bougie en cours (valeurs en texte, comme l'API)
+  assert.equal(Data.applyDerivOhlc(c, { open_time: 1704154500, open: '101', high: '104', low: '100', close: '103.5' }), false);
+  assert.equal(c.length, 2);
+  assert.equal(c[1].high, 104);
+  // nouvelle bougie
+  assert.equal(Data.applyDerivOhlc(c, { open_time: 1704155400, open: '103.5', high: '104', low: '103', close: '103.8' }, 2), true);
+  assert.equal(c.length, 2, 'la longueur maximale est respectée');
+  assert.equal(c[1].time, 1704155400);
+
+  const req = Data.derivCandlesRequest('R_75', '4h', 1000, true);
+  assert.deepEqual([req.ticks_history, req.style, req.granularity, req.subscribe], ['R_75', 'candles', 14400, 1]);
+  assert.equal(Data.isDerivSynthetic('R_75'), true);
+  assert.equal(Data.isDerivSynthetic('BOOM1000'), true);
+  assert.equal(Data.isDerivSynthetic('frxEURUSD'), false);
+});
+
+test('Deriv : 1W reconstruit depuis le journalier', () => {
+  const days = [];
+  const mon = Date.UTC(2024, 0, 1) / 1000; // lundi
+  for (let i = 0; i < 14; i++) days.push({ epoch: mon + i * 86400, open: 100 + i, high: 110 + i, low: 90 + i, close: 101 + i });
+  const w = Data.parseDerivCandles({ candles: days }, '1w');
+  assert.equal(w.length, 2);
+  assert.equal(w[0].time, mon);
+  assert.equal(w[0].close, 107);
+  assert.equal(w[1].high, 123);
+});
+
+test('synthétiques : les killzones ne comptent pas dans la checklist', () => {
+  const c = Data.demoCandles('15m', 600, 3);
+  const r = SMC.analyze(c, { useKillzones: false });
+  assert.equal(r.killzone, null);
+  if (r.setup && r.setup.zone) {
+    assert.equal(r.setup.checklist.find((x) => x.label === 'Killzone active').ok, null);
+  }
+});

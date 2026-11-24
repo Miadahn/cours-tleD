@@ -52,6 +52,7 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
 }
 #symbol { width: 120px; text-transform: uppercase; }
 #swingLen { width: 70px; }
+#appId { width: 90px; }
 #csvFile { padding-top: 4px; max-width: 220px; }
 
 .btn {

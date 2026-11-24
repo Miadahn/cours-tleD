@@ -14,6 +14,7 @@
       <label class="field">
         <span>Source</span>
         <select id="source">
+          <option value="deriv">Deriv (synthétiques, Forex, indices…)</option>
           <option value="binance">Binance (crypto, en direct)</option>
           <option value="csv">Fichier CSV</option>
           <option value="demo">Données de démo</option>
@@ -22,12 +23,18 @@
 
       <label class="field" id="symbolField">
         <span>Actif</span>
-        <input id="symbol" list="symbols" value="BTCUSDT" spellcheck="false" autocomplete="off">
-        <datalist id="symbols">
+        <input id="symbol" list="symbols-deriv" value="R_75" spellcheck="false" autocomplete="off">
+        <datalist id="symbols-deriv"></datalist>
+        <datalist id="symbols-binance">
           <option value="BTCUSDT"><option value="ETHUSDT"><option value="SOLUSDT">
           <option value="BNBUSDT"><option value="XRPUSDT"><option value="ADAUSDT">
           <option value="DOGEUSDT"><option value="PAXGUSDT"><option value="EURUSDT">
         </datalist>
+      </label>
+
+      <label class="field" id="appIdField" title="Identifiant d'application Deriv (1089 = application de test publique). Crée le tien gratuitement sur api.deriv.com.">
+        <span>Deriv App ID</span>
+        <input id="appId" value="1089" inputmode="numeric" spellcheck="false" autocomplete="off">
       </label>
 
       <label class="field" id="csvField" hidden>
@@ -55,7 +62,7 @@
       </label>
 
       <button id="refresh" class="btn primary">Analyser</button>
-      <label class="check"><input type="checkbox" id="auto"> Auto (30 s)</label>
+      <label class="check"><input type="checkbox" id="auto"> <span id="autoLabel">Temps réel</span></label>
     </div>
   </header>
 
@@ -124,6 +131,18 @@
             <li><b>London Close</b> : 10h00 – 12h00</li>
           </ul>
           <p>Le graphique est affiché en heure de New York, la référence d'ICT.</p>
+          <p>Les <b>indices synthétiques Deriv</b> (Volatility, Boom/Crash, Step, Jump) tournent 24h/24 avec un générateur aléatoire : ils n'ont pas de sessions, donc les killzones ne s'y appliquent pas. Elles restent valables pour le Forex, l'or et les indices.</p>
+        </details>
+        <details>
+          <summary>Deriv : symboles</summary>
+          <ul>
+            <li><b>R_75</b>, <b>R_100</b>… : Volatility Indices ; <b>1HZ100V</b> : version 1 tick/seconde</li>
+            <li><b>BOOM1000</b> / <b>CRASH1000</b> : pics brusques en moyenne toutes les 1000 ticks</li>
+            <li><b>stpRNG</b> : Step Index ; <b>JD25</b> : Jump Index</li>
+            <li><b>frxEURUSD</b>, <b>frxXAUUSD</b> (or) : Forex et métaux</li>
+            <li><b>OTC_NDX</b> (Nasdaq), <b>OTC_SPC</b> (S&amp;P 500) : indices</li>
+          </ul>
+          <p>Tu peux saisir n'importe quel symbole Deriv ; la liste complète est chargée automatiquement depuis Deriv.</p>
         </details>
         <details>
           <summary>Modèle de trade type</summary>

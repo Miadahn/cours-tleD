@@ -22,7 +22,7 @@
   function savePrefs() {
     try {
       localStorage.setItem(PREF_KEY, JSON.stringify({
-        source: $('source').value, symbol: $('symbol').value, tf: $('tf').value,
+        source: $('source').value, symbols: state.symbols, tf: $('tf').value, appId: $('appId').value,
         swingLen: $('swingLen').value, layers: [...state.layers],
       }));
     } catch (e) { /* stockage indisponible : on ignore */ }
@@ -36,6 +36,11 @@
     label: '',
     tf: '15m',
     csvRaw: null,
+    lastHtf: null,
+    symbols: { deriv: 'R_75', binance: 'BTCUSDT' },
+    stream: null,
+    streamKey: '',
+    streamTimer: null,
     layers: new Set(),
     priceLines: [],
     version: 0,
@@ -69,7 +74,7 @@
   // ---------------------------------------------------------------------------
   function decimals(p) {
     const a = Math.abs(p);
-    return a >= 1000 ? 2 : a >= 10 ? 3 : a >= 1 ? 4 : a >= 0.01 ? 5 : 8;
+    return a >= 1000 ? 2 : a >= 10 ? 3 : a >= 0.01 ? 5 : 8;
   }
   let priceDigits = 2;
   const fmt = (p) => (p === null || p === undefined || !Number.isFinite(p) ? '—' : p.toFixed(priceDigits));
@@ -94,7 +99,14 @@
   async function loadCandles() {
     const source = $('source').value;
     const tf = $('tf').value;
-    const symbol = $('symbol').value.trim().toUpperCase() || 'BTCUSDT';
+    const symbol = normalizeSymbol($('symbol').value, source);
+
+    if (source === 'deriv') {
+      const htfTf = Data.HTF[tf];
+      const res = await Data.fetchDeriv(symbol, tf, 1000, $('appId').value, htfTf);
+      if (!res.candles.length) throw new Error(`Deriv : aucune donnée pour ${symbol}`);
+      return { candles: res.candles, tf, label: symbol, htf: res.htf, synthetic: Data.isDerivSynthetic(symbol) };
+    }
 
     if (source === 'binance') {
       const candles = await Data.fetchBinance(symbol, tf, 1000);
@@ -137,10 +149,12 @@
     try {
       const data = await loadCandles();
       applyData(data);
+      syncStream();
     } catch (e) {
       console.error(e);
-      if ($('source').value === 'binance' && !state.candles.length) {
-        toast(`Binance injoignable (${e.message}). Passage en données de démo.`, true);
+      const src = $('source').value;
+      if ((src === 'binance' || src === 'deriv') && !state.candles.length) {
+        toast(`${src === 'deriv' ? 'Deriv' : 'Binance'} injoignable (${e.message}). Passage en données de démo.`, true);
         $('source').value = 'demo';
         updateSourceFields();
         state.loading = false;
@@ -153,14 +167,18 @@
     }
   }
 
-  function applyData({ candles, tf, label, htf }) {
+  function applyData({ candles, tf, label, htf, synthetic }) {
     const swingLength = Math.max(2, Math.min(20, parseInt($('swingLen').value, 10) || 5));
+    state.lastHtf = htf || null;
+    state.synthetic = !!synthetic;
     let htfTrend = null;
     if (htf) {
       const hr = SMC.analyze(htf.candles, { swingLength: Math.max(3, swingLength - 1) });
       if (hr.ok) htfTrend = { tf: htf.tf, trend: hr.trend, pd: hr.pd };
     }
-    const result = SMC.analyze(candles, { swingLength, htfBias: htfTrend ? htfTrend.trend : null });
+    const result = SMC.analyze(candles, {
+      swingLength, htfBias: htfTrend ? htfTrend.trend : null, useKillzones: !synthetic,
+    });
     if (!result.ok) throw new Error(result.error);
 
     const prev = state.result;
@@ -193,7 +211,8 @@
     renderSeriesDecorations();
     renderPanel();
     const now = new Date().toLocaleTimeString('fr-FR');
-    setStatus(`${label} · ${tf} · ${candles.length} bougies · heure de New York · mis à jour ${now}`);
+    const live = state.stream ? ' · ● temps réel' : '';
+    setStatus(`${label} · ${tf} · ${candles.length} bougies · heure de New York · mis à jour ${now}${live}`);
   }
 
   function notifyChanges(prev, cur, candles, sameSeries) {
@@ -304,7 +323,7 @@
     };
 
     // Killzones (uniquement en intraday <= 30 min)
-    if (state.layers.has('killzones') && Data.TF_SECONDS[state.tf] <= 1800) {
+    if (state.layers.has('killzones') && r.useKillzones && Data.TF_SECONDS[state.tf] <= 1800) {
       const vr = ts.getVisibleLogicalRange();
       if (vr) {
         const from = Math.max(0, Math.floor(vr.from));
@@ -465,7 +484,7 @@
       <div class="card">
         <h3>${esc(state.label)} · ${esc(state.tf)}</h3>
         <div class="price">${fmt(last.close)} <span class="sub ${chg >= 0 ? 'bull' : 'bear'}">${chg >= 0 ? '+' : ''}${chg.toFixed(2)} %</span></div>
-        <div class="row"><span class="k">Session</span><span>${kz ? 'Killzone ' + esc(kz.name) : '<span class="muted">Hors killzone</span>'}</span></div>
+        <div class="row"><span class="k">Session</span><span>${!r.useKillzones ? '<span class="muted">Synthétique 24h/24</span>' : kz ? 'Killzone ' + esc(kz.name) : '<span class="muted">Hors killzone</span>'}</span></div>
         <div class="row"><span class="k">ATR (14)</span><span>${fmt(r.atr[r.atr.length - 1])}</span></div>
       </div>`);
 
@@ -564,23 +583,105 @@
   // ---------------------------------------------------------------------------
   // Événements de l'interface
   // ---------------------------------------------------------------------------
-  function updateSourceFields() {
-    const src = $('source').value;
-    $('symbolField').hidden = src !== 'binance';
-    $('csvField').hidden = src !== 'csv';
-    $('auto').disabled = src !== 'binance';
-    if (src !== 'binance') { $('auto').checked = false; setAuto(false); }
+  function normalizeSymbol(v, source) {
+    const t = String(v || '').trim();
+    if (source === 'binance') return t.toUpperCase() || 'BTCUSDT';
+    if (!t) return 'R_75';
+    // Deriv : préfixes en minuscules (frx, cry, stp) et R_ en majuscules
+    const known = Data.DERIV_SYMBOLS.find(([sym]) => sym.toLowerCase() === t.toLowerCase());
+    return known ? known[0] : t;
   }
 
-  function setAuto(on) {
+  function updateSourceFields() {
+    const src = $('source').value;
+    const live = src === 'binance' || src === 'deriv';
+    $('symbolField').hidden = !live;
+    $('appIdField').hidden = src !== 'deriv';
+    $('csvField').hidden = src !== 'csv';
+    $('auto').disabled = !live;
+    $('autoLabel').textContent = src === 'deriv' ? 'Temps réel' : 'Auto (30 s)';
+    if (live) {
+      $('symbol').setAttribute('list', 'symbols-' + src);
+      $('symbol').value = state.symbols[src] || '';
+    }
+    if (!live && $('auto').checked) { $('auto').checked = false; }
+    stopStream(); // relancé par run() une fois les nouvelles données chargées
+  }
+
+  // ---------------------------------------------------------------------------
+  // Mises à jour automatiques : flux WebSocket (Deriv) ou rafraîchissement (Binance)
+  // ---------------------------------------------------------------------------
+  function stopStream() {
+    if (state.stream) { state.stream.onClose = null; state.stream.close(); }
+    state.stream = null;
+    state.streamKey = '';
     clearInterval(state.timer);
-    state.timer = on ? setInterval(run, 30000) : null;
+    state.timer = null;
+  }
+
+  async function syncStream() {
+    const src = $('source').value;
+    const want = $('auto').checked && (src === 'deriv' || src === 'binance') && state.candles.length > 0;
+    const key = want ? [src, state.label, state.tf, $('appId').value].join('|') : '';
+    if (key === state.streamKey) return;
+    stopStream();
+    if (!want) return;
+    state.streamKey = key;
+
+    if (src === 'binance') {
+      state.timer = setInterval(run, 30000);
+      return;
+    }
+    if (state.tf === '1w') { toast('Pas de flux temps réel en 1W : rafraîchissement toutes les 60 s.'); state.timer = setInterval(run, 60000); return; }
+    try {
+      const conn = await Data.streamDeriv(state.label, state.tf, $('appId').value, onTick, () => {
+        if (state.stream === conn) {
+          state.stream = null;
+          state.streamKey = '';
+          toast('Flux Deriv interrompu, reconnexion…', true);
+          setTimeout(syncStream, 3000);
+        }
+      });
+      if (state.streamKey !== key) { conn.close(); return; }
+      state.stream = conn;
+      toast(`Temps réel actif sur ${state.label}`);
+    } catch (e) {
+      state.streamKey = '';
+      $('auto').checked = false;
+      toast(`Temps réel indisponible : ${e.message}`, true);
+    }
+  }
+
+  function onTick(ohlc) {
+    if (!state.candles.length || ohlc.symbol && ohlc.symbol !== state.label) return;
+    Data.applyDerivOhlc(state.candles, ohlc, 1000);
+    // Analyse limitée à une fois par seconde (les synthétiques 1s tiquent très vite)
+    if (state.streamTimer) return;
+    state.streamTimer = setTimeout(() => {
+      state.streamTimer = null;
+      try {
+        applyData({ candles: state.candles, tf: state.tf, label: state.label, htf: state.lastHtf, synthetic: state.synthetic });
+      } catch (e) { console.error(e); }
+    }, 1000);
+  }
+
+  async function loadDerivSymbolList() {
+    const dl = $('symbols-deriv');
+    const fill = (list) => {
+      dl.innerHTML = list.map((x) => `<option value="${esc(x.symbol)}">${esc(x.name)}${x.market ? ' · ' + esc(x.market) : ''}</option>`).join('');
+    };
+    fill(Data.DERIV_SYMBOLS.map(([symbol, name]) => ({ symbol, name })));
+    try {
+      const all = await Data.listDerivSymbols($('appId').value);
+      if (all.length) fill(all);
+    } catch (e) { /* on garde la liste par défaut */ }
   }
 
   function init() {
     const p = loadPrefs();
     if (p.source && p.source !== 'csv') $('source').value = p.source;
-    if (p.symbol) $('symbol').value = p.symbol;
+    if (p.symbols) Object.assign(state.symbols, p.symbols);
+    if (p.appId) $('appId').value = p.appId;
     if (p.tf) $('tf').value = p.tf;
     if (p.swingLen) $('swingLen').value = p.swingLen;
     const boxes = document.querySelectorAll('[data-layer]');
@@ -597,10 +698,18 @@
     $('source').addEventListener('change', () => { updateSourceFields(); savePrefs(); if ($('source').value !== 'csv' || state.csvRaw) run(); });
     $('tf').addEventListener('change', () => { savePrefs(); run(); });
     $('swingLen').addEventListener('change', () => { savePrefs(); run(); });
-    $('symbol').addEventListener('change', () => { savePrefs(); run(); });
-    $('symbol').addEventListener('keydown', (e) => { if (e.key === 'Enter') { savePrefs(); run(); } });
+    const symbolChanged = () => {
+      const src = $('source').value;
+      $('symbol').value = normalizeSymbol($('symbol').value, src);
+      state.symbols[src] = $('symbol').value;
+      savePrefs();
+      run();
+    };
+    $('symbol').addEventListener('change', symbolChanged);
+    $('symbol').addEventListener('keydown', (e) => { if (e.key === 'Enter') symbolChanged(); });
+    $('appId').addEventListener('change', () => { savePrefs(); loadDerivSymbolList(); if ($('source').value === 'deriv') run(); });
     $('refresh').addEventListener('click', run);
-    $('auto').addEventListener('change', (e) => setAuto(e.target.checked));
+    $('auto').addEventListener('change', syncStream);
 
     $('csvFile').addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -624,6 +733,7 @@
     }));
 
     updateSourceFields();
+    loadDerivSymbolList();
     run();
   }
 
