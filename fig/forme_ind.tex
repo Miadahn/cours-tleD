@@ -1,0 +1,64 @@
+% Organigramme : lever une forme indéterminée (remplace images/forme_ind.jpg)
+\begin{tikzpicture}[
+	font=\small,
+	>=latex,
+	titre/.style={draw,thick,rounded corners=2pt,fill=#1,inner sep=5pt,font=\normalsize\bfseries},
+	cas/.style={draw,fill=#1,inner sep=4pt,align=center},
+	boite/.style={draw,fill=#1,inner sep=5pt,align=left},
+	fl/.style={->,thick},
+	]
+	\node[text width=17cm,align=left] (obj) at (0,0) {L'objectif est de calculer \limite{x}{a}{f(x)}, où $a$ représente un réel, $+\infty$ ou $-\infty$.};
+	%%%%%%%%%%%%%%%%%%%% Forme infini / infini %%%%%%%%%%%%%%%%%%%%
+	\node[titre=green!15] (T1) at (0,-1.1) {Forme indéterminée \og $\f{\infty}{\infty}$\fg{}};
+	\node[cas=orange!15,text width=6.5cm] (A1) at (-4.6,-2.3) {\bfseries Les fonctions rationnelles};
+	\node[cas=orange!15,text width=6.5cm] (B1) at (4.6,-2.3) {\bfseries $f(x)$ contient une racine carrée};
+	\node[boite=white,text width=7.6cm,anchor=north] (A2) at ([yshift=-0.25cm]A1.south) {La limite en $+\infty$ (ou en $-\infty$) d'une fonction rationnelle est égale à la limite du quotient de ses termes de plus haut degré au numérateur et au dénominateur.};
+	\node[boite=white,text width=7.6cm,anchor=north] (B2) at ([yshift=-0.25cm]B1.south) {On met le terme de plus haut degré en facteur sous la racine ($x\neq 0$) :\\[1mm]
+		\centering $\sqrt{ax^2+bx+c}=\lvert x\rvert\sqrt{a+\f{b}{x}+\f{c}{x^2}}$\par\smallskip $\sqrt{ax+b}=\lvert x\rvert\sqrt{\f{a}{x}+\f{b}{x^2}}$};
+	\draw[fl] (T1.west) -| (A1.north);
+	\draw[fl] (T1.east) -| (B1.north);
+	%%%%%%%%%%%%%%%%%%%% Forme +infini - infini %%%%%%%%%%%%%%%%%%%%
+	\node[titre=cyan!15] (T2) at (0,-6.1) {Forme indéterminée \og $+\infty-\infty$\fg{}};
+	\node[cas=yellow!20] (R) at (0,-7.2) {\bfseries $f(x)$ contient une racine carrée};
+	\node[cas=magenta!15,text width=4.3cm] (C1) at (-6.4,-8.5) {$f(x)=\sqrt{ax+b}+\alpha x+\beta$};
+	\node[cas=magenta!15,text width=5.6cm] (C2) at (-0.6,-8.5) {$f(x)=\sqrt{ax^2+bx+c}-\sqrt{\alpha x^2+\beta x+\delta}$};
+	\node[cas=magenta!15,text width=4.6cm] (C3) at (5.8,-8.5) {$f(x)=\sqrt{ax^2+bx+c}+\alpha x+\beta$};
+	\node[cas=yellow!10] (C2a) at (-2.4,-9.6) {$a\neq\alpha$};
+	\node[cas=yellow!10] (C2b) at (1.2,-9.6) {$a=\alpha$};
+	\node[cas=yellow!10] (C3a) at (4.4,-9.6) {$\sqrt{a}=\lvert\alpha\rvert$};
+	\node[cas=yellow!10] (C3b) at (7.4,-9.6) {$\sqrt{a}\neq\lvert\alpha\rvert$};
+	\node[cas=pink!15,text width=4.5cm] (conj) at (2.8,-10.9) {On utilise l'expression conjuguée};
+	\node[cas=violet!20,text width=16.5cm] (fact) at (0,-12.2) {On met $x$ en facteur};
+	\draw[fl] (T2) -- (R);
+	\draw[fl] (R.west) -| (C1.north);
+	\draw[fl] (R.south) -- (C2.north);
+	\draw[fl] (R.east) -| (C3.north);
+	\draw (C2.south) ++(-1.8,0) -- (C2a.north);
+	\draw (C2.south) ++(1.8,0) -- (C2b.north);
+	\draw (C3.south) ++(-1.4,0) -- (C3a.north);
+	\draw (C3.south) ++(1.6,0) -- (C3b.north);
+	\draw[fl] (C2b.south) -- (C2b.south |- conj.north);
+	\draw[fl] (C3a.south) -- (C3a.south |- conj.north);
+	\draw[fl] (C1.south) -- (C1.south |- fact.north);
+	\draw[fl] (C2a.south) -- (C2a.south |- fact.north);
+	\draw[fl] (C3b.south) -- (C3b.south |- fact.north);
+	\draw[fl] (conj.south) -- (conj.south |- fact.north);
+	%%%%%%%%%%%%%%%%%%%% Forme 0/0 %%%%%%%%%%%%%%%%%%%%
+	\node[titre=green!15] (T3) at (0,-13.6) {Forme indéterminée \og $\f{0}{0}$\fg{}};
+	\node[boite=brown!15,text width=5.2cm,anchor=north] (D1) at (-5.9,-14.5) {\centering $f(x)$ contient $\sin$, $\cos$ ou $\tan$.\\ On utilise les limites usuelles :\par\raggedright
+		$\bullet$ \limite{x}{0}{\f{\sin(kx)}{kx}=1}\\[1mm]
+		$\bullet$ \limite{x}{0}{\f{\tan(kx)}{kx}=1}\\[1mm]
+		$\bullet$ \limite{x}{0}{\f{\cos(kx)-1}{kx}=0}\\[1mm]
+		$\bullet$ \limite{x}{0}{\f{1-\cos(kx)}{(kx)^2}=\f{1}{2}}\\[1mm]
+		($k$ réel non nul)};
+	\node[boite=brown!15,text width=5.2cm,anchor=north] (D2) at (0,-14.5) {\centering $f(x)$ contient une racine carrée.\\ On utilise l'expression conjuguée :\par\raggedright
+		$\bullet$ on multiplie le numérateur et le dénominateur par l'expression conjuguée :
+		\[f(x)\times\f{\text{conjuguée}}{\text{conjuguée}}\ ;\]
+		$\bullet$ puis on simplifie par $(x-a)$.};
+	\node[boite=brown!15,text width=5.2cm,anchor=north] (D3) at (5.9,-14.5) {\centering $f(x)$ est un quotient de polynômes.\\ On simplifie :\par\raggedright
+		$\bullet$ on factorise le numérateur et le dénominateur par $(x-a)$ ;\\[1mm]
+		$\bullet$ puis on simplifie par $(x-a)$.};
+	\draw[fl] (T3.west) -| (D1.north);
+	\draw[fl] (T3.south) -- (D2.north);
+	\draw[fl] (T3.east) -| (D3.north);
+\end{tikzpicture}

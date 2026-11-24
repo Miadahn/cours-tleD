@@ -1,0 +1,89 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Outils pour produire deux versions d'une séquence à partir d'un
+% seul fichier de contenu :
+%   - version enseignant : corrigés, remarques pédagogiques, preuves ;
+%   - version élève : ces blocs sont remplacés par des lignes de réponse.
+%
+% Utilisation dans le fichier principal (après \input{my_structure}) :
+%   \newif\ifenseignant \enseignanttrue   % ou \enseignantfalse
+%   \input{outils_versions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{environ}
+
+% Lignes pointillées pour répondre : \lignesreponse{nombre de lignes}
+\newcommand{\lignesreponse}[1]{%
+	\par\medskip
+	\foreach \numligne in {1,...,#1}{\noindent\makebox[\linewidth]{\dotfill}\endgraf\vspace{3mm}}%
+	\medskip}
+
+% Corrigé d'une consigne.
+%   \begin{corrigeprof}[n] ... \end{corrigeprof}
+%   enseignant : encadré « Corrigé » ; élève : n lignes de réponse (6 par défaut).
+\NewEnviron{corrigeprof}[1][6]{%
+	\ifenseignant
+	\begin{tcolorbox}[enhanced,breakable,sharp corners,
+		colback=green!4!white,colframe=green!45!black,
+		title={\bfseries\fontfamily{ugq}\selectfont Corrigé},fonttitle=\small,
+		left=2mm,right=2mm,top=1mm,bottom=1mm,
+		before skip=2mm,after skip=3mm]
+		\BODY
+	\end{tcolorbox}%
+	\else
+	\lignesreponse{#1}%
+	\fi}
+
+% Démonstration d'une propriété : uniquement dans la version enseignant.
+\NewEnviron{preuve}{%
+	\ifenseignant
+	\begin{tcolorbox}[enhanced,breakable,sharp corners,
+		colback=gray!5!white,colframe=gray!60!black,
+		title={\bfseries\fontfamily{ugq}\selectfont Démonstration},fonttitle=\small,
+		left=2mm,right=2mm,top=1mm,bottom=1mm,
+		before skip=2mm,after skip=3mm]
+		\BODY\hfill$\square$
+	\end{tcolorbox}%
+	\fi}
+
+% Remarque pédagogique : uniquement dans la version enseignant.
+\NewEnviron{noteprof}{%
+	\ifenseignant
+	\begin{tcolorbox}[enhanced,breakable,sharp corners,
+		colback=blue!4!white,colframe=blue!50!black,
+		title={\bfseries\fontfamily{ugq}\selectfont Remarque pédagogique},fonttitle=\small,
+		left=2mm,right=2mm,top=1mm,bottom=1mm,
+		before skip=2mm,after skip=3mm]
+		\small\BODY
+	\end{tcolorbox}%
+	\fi}
+
+% Mention de la version dans l'en-tête de page
+\newcommand{\nomversion}{\ifenseignant Version enseignant\else Version élève\fi}
+
+% Bloc de cours illustré (tableau, schéma, courbe) « à coller ».
+%   \begin{acoller}{Titre} ... \end{acoller}  puis, plus loin,  \collerici
+%   enseignant : le bloc est imprimé à sa place dans le cours ;
+%   élève : le bloc est mis en attente et imprimé à l'endroit du \collerici
+%   suivant (juste après la consigne correspondante), dans un cadre
+%   « À coller dans le cahier de cours ».
+\makeatletter
+\gdef\acoller@file{}
+\newcommand{\acollerbloc}[2]{%
+	\par\medskip
+	\begin{tcolorbox}[enhanced,breakable,sharp corners,
+		colback=white,colframe=black!70,
+		borderline={0.8pt}{0pt}{black!70,dashed},boxrule=0pt,
+		title={\ding{34}\enspace À coller dans le cahier de cours\enspace\ding{34}\hfill #1},
+		fonttitle=\small\bfseries\fontfamily{ugq}\selectfont,colbacktitle=black!8,coltitle=black,
+		left=2mm,right=2mm,top=2mm,bottom=2mm]
+		#2
+	\end{tcolorbox}\par}
+\NewEnviron{acoller}[1]{%
+	\ifenseignant
+	\BODY
+	\else
+	\edef\acoller@tmp{\noexpand\g@addto@macro\noexpand\acoller@file{%
+			\noexpand\acollerbloc{\unexpanded{#1}}{\unexpanded\expandafter{\BODY}}}}%
+	\acoller@tmp
+	\fi}
+\newcommand{\collerici}{\ifenseignant\else\acoller@file\gdef\acoller@file{}\fi}
+\makeatother

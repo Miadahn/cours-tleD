@@ -1,0 +1,82 @@
+\documentclass[ams,openany,10pt,presentation,utf8]{mathbook}
+%\usepackage{charter}
+%\usepackage{bookman}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[lf]{Baskervaldx} % lining figures
+\usepackage[bigdelims,vvarbb]{newtxmath} % math italic letters from Nimbus Roman
+\usepackage[cal=boondoxo]{mathalfa} % mathcal from STIX, unslanted a bit
+\renewcommand*\oldstylenums[1]{\textosf{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{newpxtext,eulerpx}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[adobe-utopia]{mathdesign}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[condensed,math]{kurier}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{mathrsfs}
+\usepackage[tikz]{bclogo}
+\usepackage{ulem}
+\usepackage{pstricks}
+\usepackage{pas-math}
+\usepackage{wasysym}
+\usepackage{cancel}
+\usepackage{fourier-orns}
+\usepackage{lscape}
+%\usepackage[toc]{minitoc}
+\definecolor{bleu}{cmyk}{0.59,0.11,0,0.59}
+\definecolor{vert}{cmyk}{0.78,0,0.74,0.45}
+\lstset{
+	numbers=left, 
+	numberstyle=\tiny, 
+	stepnumber=1, 
+	numbersep=3pt, 
+	language=[LaTeX]TeX, 
+	backgroundcolor=\color{bleu!20},
+	frame=shadowbox,
+	rulesepcolor=\color{bleu},
+	rulecolor=\color{bleu},
+	framexleftmargin=10pt,
+	keywordstyle=\color{vert}\bfseries,
+	basicstyle=\ttfamily,
+    columns=flexible,
+    keepspaces=true,
+    upquote=true,
+    commentstyle=\color{gray},
+    morekeywords={redefineColor,dfrac,setlength,cellspacetoplimit, cellspacebottomlimit,firstline,text,intro,introauthor,chapter, itemclass,exostart,corrstart,AfficheCorriges,columnbreak,titlepic, nbcolindex,indexname,printindex,makeindex,activites, DefineNewBoxLikeRem,BreakCorr}
+}
+%\usepackage{lipsum}
+%\input{add}
+\mathversion{bold}
+\everymath{\displaystyle}
+\title{Cours de mathématiques T\up{le}D}
+\author{I.L. TASSIGUI}
+\titlepic[0.5]{fractal.jpg}
+%\def\coef@opacity@pic{0}
+%\date{\today}
+\fancyhead[RE,RO]{\rightmark}
+\fancyhead[LE,LO]{\leftmark}
+\cfoot{{\footnotesize{\textbf\textsf{{Maths T\up{le}D | I. L. TASSIGUI \phone\, 95739293}}}}}
+\makeindex
+
+
+\input{my_structure}
+%\usepackage[rgb]{xcolor}
+\selectcolormodel{natural}
+\usepackage{ninecolors}
+\selectcolormodel{rgb}
+\usepackage{tabularray}
+\UseTblrLibrary{diagbox} 
+\usepackage{systeme}
+%\usepackage{lipsum}
+%\usepackage{tdsfrmath}
+%\usepackage{savetrees}
+%%%%%%%%%%%%%%%%%%%% Version (enseignant / élève) %%%%%%%%%%%%%%%%%%%%
+\newif\ifenseignant
+\enseignanttrue
+\input{outils_versions}
+\rfoot{\footnotesize{\fontfamily{ugq}\selectfont\nomversion}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\input{séquences/limite_continuite_versions}
+\end{document}
