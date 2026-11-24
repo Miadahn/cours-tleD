@@ -850,18 +850,19 @@ Toutes ces égalités se démontrent de la même façon : deux réels positifs d
 \fi % --- fin cours ---
 \consigne{Réinvestissement}{1.15}{
 \par Simplifie les écritures suivantes :
-\par $A=\sqrt[3]{9\sqrt{3}-11\sqrt{2}}$ \hfil $B=\F{\sqrt[4]{32}\times \sqrt[6]{27}\times \sqrt[4]{108}}{\sqrt{\sqrt[4]{108}}}$
+\par $A=\sqrt[3]{9\sqrt{3}-11\sqrt{2}}$ \hfil $B=\F{\sqrt[4]{32}\times \sqrt[6]{27}\times \sqrt[4]{108}}{\sqrt[4]{24}}$
 }
 \collerici
 \begin{corrigeprof}[10]
 \begin{itemize}
 	\item $\big(\sqrt3-\sqrt2\big)^3=3\sqrt3-3\times3\times\sqrt2+3\times\sqrt3\times2-2\sqrt2=9\sqrt3-11\sqrt2$, et $\sqrt3-\sqrt2>0$. Donc $A=\sqrt3-\sqrt2$.
-	\item $32=2^5$, $27=3^3$, $108=2^2\times3^3$. En écriture puissance :
-	\par $B=\f{2^{\f54}\times 3^{\f12}\times 2^{\f12}\times 3^{\f34}}{2^{\f14}\times 3^{\f38}}=2^{\f54+\f12-\f14}\times3^{\f12+\f34-\f38}=2^{\f32}\times 3^{\f78}$, soit $B=2\sqrt2\times\sqrt[8]{3^7}=2\sqrt2\,\sqrt[8]{2187}\approx 7{,}40$.
+	\item $32=2^5$, $27=3^3$, $108=2^2\times3^3$ et $24=2^3\times 3$. En écriture puissance :
+	\par $B=\f{2^{\f54}\times 3^{\f12}\times 2^{\f12}\times 3^{\f34}}{2^{\f34}\times 3^{\f14}}=2^{\f54+\f12-\f34}\times3^{\f12+\f34-\f14}=2^1\times 3^1$, donc $B=6$.
+	\par (Autre méthode : $\f{\sqrt[4]{32}\times\sqrt[4]{108}}{\sqrt[4]{24}}=\sqrt[4]{\f{32\times108}{24}}=\sqrt[4]{144}=\sqrt{12}$ et $\sqrt[6]{27}=\sqrt3$, d'où $B=\sqrt{12}\times\sqrt3=\sqrt{36}=6$.)
 \end{itemize}
 \end{corrigeprof}
 \begin{noteprof}
-Cette consigne n'était pas numérotée dans le fichier d'origine (numéro 1.15 ajouté). Le résultat de $B$ n'est pas un entier : vérifier que l'énoncé correspond bien à l'intention (par exemple le dénominateur $\sqrt{\sqrt[4]{108}}$).
+Cette consigne n'était pas numérotée dans le fichier d'origine (numéro 1.15 ajouté). Énoncé corrigé : le dénominateur de $B$ était $\sqrt{\sqrt[4]{108}}$, ce qui donnait $B=2\sqrt2\,\sqrt[8]{2187}$ ; avec $\sqrt[4]{24}$, on obtient $B=6$.
 \end{noteprof}
 \ifenseignant % --- cours (absent de la version élève) ---
 \subsection{Puissance d'exposant rationnel d'un nombre réel strictement positif}
